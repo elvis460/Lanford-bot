@@ -15,3 +15,5 @@
 
 
 如果有朋友也想用Rails實作的話，比較需要注意的地方是 `Route 及 CSRF token Verify ` 其餘問題不大，單看如何應用
+
+`直接使用的話，替換setting.yml.sample檔中的token為粉絲頁的token轉存setting.yml應該就可以動了`
