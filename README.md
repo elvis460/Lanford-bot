@@ -1,24 +1,17 @@
-# README
+#Messenger Bot API 實測
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+參考 [官方文件](https://developers.facebook.com/docs/messenger-platform/quickstart) 以Rails改寫
 
-Things you may want to cover:
+並實作 [Send API](https://developers.facebook.com/docs/messenger-platform/send-api-reference) 中的
 
-* Ruby version
+1. Image Attachment 
+2. Video Attachment （因為反應太慢所以在專案中已移除）
+3. Button Template
+4. Quick Replies
 
-* System dependencies
+還有用到 [Persistent Menu](https://developers.facebook.com/docs/messenger-platform/thread-settings/persistent-menu) 
 
-* Configuration
+實測下確實很實用，可以拿來做很多創意的應用 [Her/Him](https://www.facebook.com/getHerHim/?fref=ts) 就是不錯的例子
 
-* Database creation
 
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+如果有朋友也想用Rails實作的話，比較需要注意的地方是 `Route 及 CSRF token Verify ` 其餘問題不大，單看如何應用
