@@ -1,0 +1,13 @@
+defaults: &defaults
+  Messenger_api:
+    access_token: page_access_token
+    verify_token: your_verify_token
+development:
+  <<: *defaults
+  neat_setting: 800
+
+test:
+  <<: *defaults
+
+production:
+  <<: *defaults
