@@ -1,7 +1,7 @@
 class BotsController < ApplicationController
   include BotsHelper
-  skip_before_filter :verify_authenticity_token
-
+  skip_before_action :verify_authenticity_token
+  require 'cleverbot'
   def webhook
     if (params['hub.mode'] == 'subscribe' && params['hub.verify_token'] == Settings.Messenger_api.verify_token) 
       render text: params['hub.challenge']
@@ -37,7 +37,8 @@ class BotsController < ApplicationController
               when '鞋子'
                 FacebookBot.new.sale_shoes(sender)     
               else
-                FacebookBot.new.default_message(sender) 
+                bot = Cleverbot.new(Settings.Cleverbot.api_user,Settings.Cleverbot.api_key).say(text)
+                FacebookBot.new.send_text_message(sender , bot) 
             end
           end
         elsif(event[:postback] && postback = event[:postback][:payload])
