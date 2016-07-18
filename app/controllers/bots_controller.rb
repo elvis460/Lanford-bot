@@ -1,7 +1,9 @@
 class BotsController < ApplicationController
   include BotsHelper
   skip_before_action :verify_authenticity_token
-  require 'cleverbot'
+  require 'rest-client'
+  require 'nokogiri'
+
   def webhook
     if (params['hub.mode'] == 'subscribe' && params['hub.verify_token'] == Settings.Messenger_api.verify_token) 
       render text: params['hub.challenge']
@@ -14,6 +16,7 @@ class BotsController < ApplicationController
       messaging_events = params[:entry][0][:messaging]
       messaging_events.each do |event|
         sender = event[:sender][:id]
+        User.create(fb_id: sender) if !User.find_by(fb_id: sender)
         if (event[:message] && text = event[:message][:text])
           if (event[:message][:quick_reply] && payload = event[:message][:quick_reply][:payload])
             case payload
@@ -35,10 +38,13 @@ class BotsController < ApplicationController
               when 'hello'
                 FacebookBot.new.send_text_message(sender, "I'm Lanford.") 
               when '鞋子'
-                FacebookBot.new.sale_shoes(sender)     
+                FacebookBot.new.sale_shoes(sender) 
+              when 'trace'
+                FacebookBot.new.bamboo_trace(sender)       
               else
-                bot = Cleverbot.new(Settings.Cleverbot.api_user,Settings.Cleverbot.api_key).say(text)
-                FacebookBot.new.send_text_message(sender , bot) 
+                request =  Nokogiri::HTML(RestClient.post 'https://kakko.pandorabots.com/pandora/talk?botid=f326d0be8e345a13&skin=chat', :botcust2 => 'aef88233ae01d56c', :message => text)
+                response = request.css('b')[2].next
+                User.find_by(fb_id: sender).update(ai_response: response) 
             end
           end
         elsif(event[:postback] && postback = event[:postback][:payload])

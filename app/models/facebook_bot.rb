@@ -98,6 +98,47 @@ class FacebookBot
     send_generic_message(sender, shoes)    
   end
 
+  def bamboo_trace(sender)
+    shoes = {
+      attachment: {
+        type: "template",
+        payload: {
+          template_type: "generic",
+            elements: [{
+            title: "彩色勾勾",
+            subtitle: "彩色Nike",
+            item_url: "http://bamboo.villager.website/?customer=#{sender}",               
+            image_url: "http://down1.sucaitianxia.com/ai/20/ai4095.jpg",
+            buttons: [{
+              type: "web_url",
+              url: "http://bamboo.villager.website/?customer=#{sender}",
+              title: "前往選購"
+            }, {
+              type: "postback",
+              title: "讓我看妳還會什麼",
+              payload: "Skills"
+            }],
+          }, {
+            title: "踢不爛",
+            subtitle: "Timberland",
+            item_url: "http://bamboo.villager.website/?customer=#{sender}",               
+            image_url: "https://images.timberland.com/is/image/timberland/10061024-HERO?$PLP-IMAGE$",
+            buttons: [{
+              type: "web_url",
+              url: "http://bamboo.villager.website/?customer=#{sender}",
+              title: "前往選購"
+            }, {
+              type: "postback",
+              title: "還會別的？",
+              payload: "Skills"
+            }]
+          }]
+        }
+      }
+    }
+    send_generic_message(sender, shoes)    
+  end
+
   def good_morning(sender)
     image = {
       "attachment":{
@@ -174,5 +215,11 @@ class FacebookBot
       }
     }  
     send_generic_message(sender, button) 
+  end
+
+  def broadcast(message)
+    User.all.each do |user|
+      send_text_message(user.fb_id,message)
+    end
   end
 end
