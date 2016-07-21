@@ -4,6 +4,10 @@ class BotsController < ApplicationController
   require 'rest-client'
   require 'nokogiri'
 
+  def index
+    
+  end
+
   def webhook
     if (params['hub.mode'] == 'subscribe' && params['hub.verify_token'] == Settings.Messenger_api.verify_token) 
       render text: params['hub.challenge']
@@ -77,7 +81,7 @@ class BotsController < ApplicationController
               FacebookBot.new.send_generic_message(sender, start)
             when 'Shoes'
               FacebookBot.new.sale_shoes(sender)
-          end 
+          end  
         end        
       end
     end
