@@ -33,6 +33,55 @@ class FacebookBot
     send_message(data)
   end
 
+  def do_action(sender, action_name)
+    action = Action.find_by_name(action_name)
+    case action.action_type
+      when 'product'
+        build_product(sender,action.products)
+    end  
+  end
+
+
+  def build_product(sender,products)
+    items = {
+      attachment: {
+        type: "template",
+        payload: {
+          template_type: "generic",
+          elements: 
+            products.map do |product|
+              {
+                title: product.title,
+                subtitle: product.subtitle,
+                item_url: product.item_url,               
+                image_url: product.image_url,
+                buttons: 
+                product.product_buttons.map{|btn| 
+                  if btn.button_type == 'web_url' 
+                    {
+                    type: btn.button_type,
+                    url: btn.url,
+                    title: btn.title
+                    }
+                  else
+                    {
+                    type: btn.button_type,
+                    title: btn.title,
+                    payload: btn.payload
+                    }
+                  end
+                }
+                
+              }
+            end
+        }
+      }
+    }
+    send_generic_message(sender, items) 
+  end
+
+
+
   def default_message(sender)
     mes = {
       "text":"嗨～我是藍佛:",
@@ -220,6 +269,13 @@ class FacebookBot
   def broadcast(message)
     User.all.each do |user|
       send_text_message(user.fb_id,message)
+    end
+  end
+
+  def get_user_data
+    User.all.each do |user|
+      datas = JSON.parse(RestClient.get "https://graph.facebook.com/v2.7/#{user.fb_id}?access_token=#{Settings.Messenger_api.access_token}")
+      user.update(name: datas['first_name']+" "+datas['last_name'],gender: datas['gender'],locale: datas['locale'])
     end
   end
 end

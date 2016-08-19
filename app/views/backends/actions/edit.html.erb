@@ -1,0 +1,89 @@
+<%=render partial: 'navbar'%>
+<div class="row">
+  <div class="col-md-12">
+    <%= form_tag( backends_action_path(@action), multipart: true ,method: :put,id: 'action_form') do %>
+      <section class="panel col-md-12">
+        <header class="panel-heading">
+            Action Forms
+        </header>
+          <div class="panel-body">
+            <div class="form-group col-md-6">
+              <label for="action_name">ActionName</label>
+              <input type="text" name="act[name]" class="form-control" placeholder="Enter Action Name" value="<%=@action.name%>">
+            </div>
+            <div class="form-group col-md-6">
+              <label for="action_type">ActionType</label>
+              <select class="form-control" name="act[action_type]">
+                <option value="product">product</option>
+              </select>
+            </div>
+          </div>
+      </section>
+
+      <%@products.each do |product| %>
+        <section class="panel col-md-12">
+          <header class="panel-heading">
+              Product Forms
+          </header>
+            <div class="panel-body">
+              <div class="form-group col-md-6">
+                <label for="action_name">Title</label>
+                <input type="text" name="act[product_title][]" class="form-control" placeholder="Enter Product Title" value="<%=product.title%>">
+              </div>
+              <div class="form-group col-md-6">
+                <label for="action_type">Subtitle</label>
+                <input type="text" name="act[product_subtitle][]" class="form-control" placeholder="Enter Product Subtitle" value="<%=product.subtitle%>">
+              </div>
+              <div class="form-group col-md-6">
+                <label for="action_type">Item Url</label>
+                <input type="text" name="act[product_item_url][]" class="form-control" placeholder="Enter Product Item Url" value="<%=product.item_url%>">
+              </div>
+              <div class="form-group col-md-6">
+                <label for="action_type">Image Url</label>
+                <input type="text" name="act[product_image_url][]" class="form-control" placeholder="Enter Product Image Url" value="<%=product.image_url%>">
+              </div>
+              <hr width="100%">
+              <div class="center" style="text-align: center;margin: 2%"><div class="btn btn-success btn-xs btn-block">Buttons</div></div>
+              <div class="form-group row">  
+                <div class="form-group col-md-6">
+                  <label for="action_type">ButtonType</label>
+                  <select class="form-control" disabled name="act[product_button_type]">
+                    <option value="web_url" selected>web_url</option>
+                    <option value="postback">postback</option>
+                  </select>
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="action_name">Title</label>
+                  <input type="text" name="act[product_button_title][]" class="form-control" placeholder="Enter Product Button Title" value="<%=product.product_buttons.first.title%>">
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="action_type">Url</label>
+                  <input type="text" name="act[product_button_url][]" class="form-control" placeholder="Enter Product Button Url" value="<%=product.product_buttons.first.url%>">
+                </div>
+              </div>  
+              <div class="form-group row">
+                <div class="form-group col-md-6">
+                  <label for="action_type">ButtonType</label>
+                  <select class="form-control" name="act[product_button_type][]" disabled="">
+                    <option value="web_url">web_url</option>
+                    <option value="postback" selected>postback</option>
+                  </select>
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="action_name">Title</label>
+                  <input type="text" name="act[product_button_title][]" class="form-control" placeholder="Enter Product Button Title" value="<%=product.product_buttons.last.title%>">
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="action_type">Payload</label>
+                  <input type="text" name="act[product_button_payload][]" class="form-control" placeholder="Enter Product Button Payload" value="<%=product.product_buttons.last.payload%>">
+                </div>
+              </div>  
+            </div>
+        </section>
+      <%end%>
+      <div class="submit_btn" style="text-align: center;">
+        <button type="submit" class="btn btn-danger">Submit</button>
+      </div>
+    <%end%>
+  </div>
+</div>

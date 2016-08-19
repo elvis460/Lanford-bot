@@ -28,8 +28,10 @@ class BotsController < ApplicationController
                 FacebookBot.new.default_message(sender)
               when 'Skills'
                 FacebookBot.new.send_text_message(sender, '等等呢，我還在學習...')  
-              when 'Shoes'
-                FacebookBot.new.sale_shoes(sender)
+              # when 'Shoes'
+              #   FacebookBot.new.sale_shoes(sender)
+              when Action.first.name
+                FacebookBot.new.do_action(sender, Action.first.name)
               when '早安'
                 FacebookBot.new.good_morning(sender)
               when '午安'
@@ -38,17 +40,27 @@ class BotsController < ApplicationController
                 FacebookBot.new.good_night(sender) 
             end
           else
-            case text
-              when 'hello'
-                FacebookBot.new.send_text_message(sender, "I'm Lanford.") 
-              when '鞋子'
-                FacebookBot.new.sale_shoes(sender) 
-              when 'trace'
-                FacebookBot.new.bamboo_trace(sender)       
-              else
-                request =  Nokogiri::HTML(RestClient.post 'https://kakko.pandorabots.com/pandora/talk?botid=f326d0be8e345a13&skin=chat', :botcust2 => 'aef88233ae01d56c', :message => text)
-                response = request.css('b')[2].next
-                User.find_by(fb_id: sender).update(ai_response: response) 
+            if Action.all.map{|x| x.name}.index(text)
+              FacebookBot.new.do_action(sender, text)
+            else
+              case text
+                when Action.all.map{|x| x.name}
+                  
+                when 'hello'
+                  FacebookBot.new.send_text_message(sender, "I'm Lanford.") 
+                when '鞋子'
+                  FacebookBot.new.sale_shoes(sender) 
+                when 'trace'
+                  FacebookBot.new.bamboo_trace(sender) 
+                # when Action.first.name
+                #   FacebookBot.new.do_action(sender, Action.first.name)    
+                # when 'moduletest'
+                #   FacebookBot.new.do_action(sender, Action.first.name)  
+                else
+                  request =  Nokogiri::HTML(RestClient.post 'https://kakko.pandorabots.com/pandora/talk?botid=f326d0be8e345a13&skin=chat', :botcust2 => 'aef88233ae01d56c', :message => text)
+                  response = request.css('b')[2].next
+                  User.find_by(fb_id: sender).update(ai_response: response) 
+              end
             end
           end
         elsif(event[:postback] && postback = event[:postback][:payload])
@@ -87,5 +99,9 @@ class BotsController < ApplicationController
     end
    render :body => nil, :status => 200, :content_type => 'text/html'
    return
+  end
+
+  def error
+    render :file => 'public/404.html', :status => :not_found, :layout => false
   end
 end
