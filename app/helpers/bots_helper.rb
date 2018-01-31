@@ -55,17 +55,17 @@ module BotsHelper
         {
           "content_type":"text",
           "title":"早安",
-          "payload":"早安"
+          "payload":"morning"
         },
         {
           "content_type":"text",
           "title":"午安",
-          "payload":"午安"
+          "payload":"evening"
         },
         {
           "content_type":"text",
           "title":"晚安",
-          "payload":"晚安"
+          "payload":"night"
         }
       ]
     }
