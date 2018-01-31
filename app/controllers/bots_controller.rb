@@ -5,7 +5,10 @@ class BotsController < ApplicationController
   require 'nokogiri'
 
   def index
-    
+  # request=  Nokogiri::HTML(RestClient.post 'https://kakko.pandorabots.com/pandora/talk?botid=f326d0be8e345a13&skin=chat', :botcust2 => '80710b3efe026b98', :message => "messenger api broken")
+  # response = request.css('b')[2].next
+  # render text: response
+  # return
   end
 
   def webhook
@@ -30,8 +33,8 @@ class BotsController < ApplicationController
                 FacebookBot.new.send_text_message(sender, '等等呢，我還在學習...')  
               # when 'Shoes'
               #   FacebookBot.new.sale_shoes(sender)
-              when Action.first.name
-                FacebookBot.new.do_action(sender, Action.first.name)
+              # when Action.first.name
+              #   FacebookBot.new.do_action(sender, Action.first.name)
               when '早安'
                 FacebookBot.new.good_morning(sender)
               when '午安'
@@ -57,7 +60,7 @@ class BotsController < ApplicationController
                 # when 'moduletest'
                 #   FacebookBot.new.do_action(sender, Action.first.name)  
                 else
-                  request =  Nokogiri::HTML(RestClient.post 'https://kakko.pandorabots.com/pandora/talk?botid=f326d0be8e345a13&skin=chat', :botcust2 => 'aef88233ae01d56c', :message => text)
+                  request =  Nokogiri::HTML(RestClient.post 'https://kakko.pandorabots.com/pandora/talk?botid=f326d0be8e345a13&skin=chat', :botcust2 => '80710b3efe026b98', :message => text)
                   response = request.css('b')[2].next
                   User.find_by(fb_id: sender).update(ai_response: response) 
               end
