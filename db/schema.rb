@@ -12,14 +12,14 @@
 
 ActiveRecord::Schema.define(version: 20160819111259) do
 
-  create_table "actions", force: :cascade do |t|
+  create_table "actions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name"
     t.integer  "action_type"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
   end
 
-  create_table "admins", force: :cascade do |t|
+  create_table "admins", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name"
     t.string   "password"
     t.string   "password_digest"
@@ -27,7 +27,7 @@ ActiveRecord::Schema.define(version: 20160819111259) do
     t.datetime "updated_at",      null: false
   end
 
-  create_table "product_buttons", force: :cascade do |t|
+  create_table "product_buttons", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "button_type"
     t.string   "title"
     t.string   "url"
@@ -37,7 +37,7 @@ ActiveRecord::Schema.define(version: 20160819111259) do
     t.datetime "updated_at",  null: false
   end
 
-  create_table "products", force: :cascade do |t|
+  create_table "products", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "title"
     t.string   "subtitle"
     t.string   "item_url"
@@ -47,18 +47,18 @@ ActiveRecord::Schema.define(version: 20160819111259) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "traces", force: :cascade do |t|
+  create_table "traces", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "user_id"
     t.string   "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "users", force: :cascade do |t|
+  create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "fb_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-    t.text     "ai_response"
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+    t.text     "ai_response", limit: 65535
     t.string   "name"
     t.string   "gender"
     t.string   "locale"
