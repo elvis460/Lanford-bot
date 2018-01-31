@@ -32,8 +32,8 @@ class BotsController < ApplicationController
                 default_message(sender)
               when 'Skills'
                 send_text_message(sender, '等等呢，我還在學習...')  
-              # when 'Shoes'
-              #   sale_shoes(sender)
+              when 'Shoes'
+                sale_shoes(sender)
               # when Action.first.name
               #   do_action(sender, Action.first.name)
               when 'morning'
