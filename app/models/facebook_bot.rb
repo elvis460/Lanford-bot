@@ -1,38 +1,5 @@
 class FacebookBot
 
-  def send_message(data)
-
-    url = URI.parse("https://graph.facebook.com/v2.6/me/messages?access_token=#{Settings.Messenger_api.access_token}")
-
-    http = Net::HTTP.new(url.host, 443)
-    http.use_ssl = true
-    http.verify_mode = OpenSSL::SSL::VERIFY_NONE #only for development.
-    begin
-      request = Net::HTTP::Post.new(url.request_uri)
-      request["Content-Type"] = "application/json"
-      request.body = data.to_json
-      response = http.request(request)
-      body = JSON(response.body)
-      return { ret: body["error"].nil?, body: body }
-    end
-  end
-
-  def send_text_message(sender, text)
-    data = {
-      recipient: { id: sender},
-      message: { text: text}
-    }
-    send_message(data)
-  end
-
-  def send_generic_message(sender, mes)
-    data = {
-      recipient: { id: sender },
-      message: mes
-    }
-    send_message(data)
-  end
-
   def do_action(sender, action_name)
     action = Action.find_by_name(action_name)
     case action.action_type
@@ -147,53 +114,53 @@ class FacebookBot
     send_generic_message(sender, shoes)    
   end
 
-  def bamboo_trace(sender)
-    shoes = {
-      attachment: {
-        type: "template",
-        payload: {
-          template_type: "generic",
-            elements: [{
-            title: "彩色勾勾",
-            subtitle: "彩色Nike",
-            item_url: "http://bamboo.villager.website/?customer=#{sender}",               
-            image_url: "http://down1.sucaitianxia.com/ai/20/ai4095.jpg",
-            buttons: [{
-              type: "web_url",
-              url: "http://bamboo.villager.website/?customer=#{sender}",
-              title: "前往選購"
-            }, {
-              type: "postback",
-              title: "讓我看妳還會什麼",
-              payload: "Skills"
-            }],
-          }, {
-            title: "踢不爛",
-            subtitle: "Timberland",
-            item_url: "http://bamboo.villager.website/?customer=#{sender}",               
-            image_url: "https://images.timberland.com/is/image/timberland/10061024-HERO?$PLP-IMAGE$",
-            buttons: [{
-              type: "web_url",
-              url: "http://bamboo.villager.website/?customer=#{sender}",
-              title: "前往選購"
-            }, {
-              type: "postback",
-              title: "還會別的？",
-              payload: "Skills"
-            }]
-          }]
-        }
-      }
-    }
-    send_generic_message(sender, shoes)    
-  end
+  # def bamboo_trace(sender)
+  #   shoes = {
+  #     attachment: {
+  #       type: "template",
+  #       payload: {
+  #         template_type: "generic",
+  #           elements: [{
+  #           title: "彩色勾勾",
+  #           subtitle: "彩色Nike",
+  #           item_url: "http://bamboo.villager.website/?customer=#{sender}",               
+  #           image_url: "http://down1.sucaitianxia.com/ai/20/ai4095.jpg",
+  #           buttons: [{
+  #             type: "web_url",
+  #             url: "http://bamboo.villager.website/?customer=#{sender}",
+  #             title: "前往選購"
+  #           }, {
+  #             type: "postback",
+  #             title: "讓我看妳還會什麼",
+  #             payload: "Skills"
+  #           }],
+  #         }, {
+  #           title: "踢不爛",
+  #           subtitle: "Timberland",
+  #           item_url: "http://bamboo.villager.website/?customer=#{sender}",               
+  #           image_url: "https://images.timberland.com/is/image/timberland/10061024-HERO?$PLP-IMAGE$",
+  #           buttons: [{
+  #             type: "web_url",
+  #             url: "http://bamboo.villager.website/?customer=#{sender}",
+  #             title: "前往選購"
+  #           }, {
+  #             type: "postback",
+  #             title: "還會別的？",
+  #             payload: "Skills"
+  #           }]
+  #         }]
+  #       }
+  #     }
+  #   }
+  #   send_generic_message(sender, shoes)    
+  # end
 
   def good_morning(sender)
     image = {
       "attachment":{
         "type":"image",
         "payload":{
-          "url":"https://s3.favim.com/orig/140725/cafe-coffee-good-morning-love-Favim.com-1943450.jpg"
+          "url":"https://lanford-bot.villager.website/assets/lanford_2.jpg"
         }
       }
     }
@@ -266,16 +233,51 @@ class FacebookBot
     send_generic_message(sender, button) 
   end
 
-  def broadcast(message)
-    User.all.each do |user|
-      send_text_message(user.fb_id,message)
-    end
-  end
 
-  def get_user_data
-    User.all.each do |user|
-      datas = JSON.parse(RestClient.get "https://graph.facebook.com/v2.7/#{user.fb_id}?access_token=#{Settings.Messenger_api.access_token}")
-      user.update(name: datas['first_name']+" "+datas['last_name'],gender: datas['gender'],locale: datas['locale'])
+  private
+    # these are reply methods
+    def send_message(data)
+      url = URI.parse("https://graph.facebook.com/v2.6/me/messages?access_token=#{Settings.Messenger_api.access_token}")
+      http = Net::HTTP.new(url.host, 443)
+      http.use_ssl = true
+      http.verify_mode = OpenSSL::SSL::VERIFY_NONE #only for development.
+      begin
+        request = Net::HTTP::Post.new(url.request_uri)
+        request["Content-Type"] = "application/json"
+        request.body = data.to_json
+        response = http.request(request)
+        body = JSON(response.body)
+        return { ret: body["error"].nil?, body: body }
+      end
     end
-  end
+
+    def send_text_message(sender, text)
+      data = {
+        recipient: { id: sender},
+        message: { text: text}
+      }
+      send_message(data)
+    end
+
+    def send_generic_message(sender, mes)
+      data = {
+        recipient: { id: sender },
+        message: mes
+      }
+      send_message(data)
+    end
+
+    # these are the positive action to users
+    def broadcast(message)
+      User.all.each do |user|
+        send_text_message(user.fb_id,message)
+      end
+    end
+
+    def get_user_data
+      User.all.each do |user|
+        datas = JSON.parse(RestClient.get "https://graph.facebook.com/v2.7/#{user.fb_id}?access_token=#{Settings.Messenger_api.access_token}")
+        user.update(name: datas['first_name']+" "+datas['last_name'],gender: datas['gender'],locale: datas['locale'])
+      end
+    end
 end

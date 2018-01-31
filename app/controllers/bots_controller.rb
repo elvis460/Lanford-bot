@@ -35,11 +35,11 @@ class BotsController < ApplicationController
               #   FacebookBot.new.sale_shoes(sender)
               # when Action.first.name
               #   FacebookBot.new.do_action(sender, Action.first.name)
-              when '早安'
+              when 'morning'
                 FacebookBot.new.good_morning(sender)
-              when '午安'
+              when 'evening'
                 FacebookBot.new.good_afternoon(sender)  
-              when '晚安'
+              when 'night'
                 FacebookBot.new.good_night(sender) 
             end
           else
@@ -51,10 +51,10 @@ class BotsController < ApplicationController
                   
                 when 'hello'
                   FacebookBot.new.send_text_message(sender, "I'm Lanford.") 
-                when '鞋子'
-                  FacebookBot.new.sale_shoes(sender) 
-                when 'trace'
-                  FacebookBot.new.bamboo_trace(sender) 
+                # when '鞋子'
+                #   FacebookBot.new.sale_shoes(sender) 
+                # when 'trace'
+                #   FacebookBot.new.bamboo_trace(sender) 
                 # when Action.first.name
                 #   FacebookBot.new.do_action(sender, Action.first.name)    
                 # when 'moduletest'
