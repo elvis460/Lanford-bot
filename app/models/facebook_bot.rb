@@ -210,7 +210,7 @@ class FacebookBot
             title: "藍佛是我",
             subtitle: "我是藍佛",
             item_url: "https://www.facebook.com/yiwen.lan.10",               
-            image_url: "https://www.villager.website/assets/lanford_2-f2dec8ef23df59c06ce0f4a02c6f8741cdf94f8aebe2ede16f7772866b3d5118.jpg",
+            image_url: "https://www.villager.website/assets/lanford_1.jpg",
             buttons: [{
               type: "web_url",
               url: "https://www.facebook.com/yiwen.lan.10",
@@ -224,7 +224,7 @@ class FacebookBot
             title: "Lanford is me",
             subtitle: "I'm Lanford",
             item_url: "https://www.facebook.com/yiwen.lan.10",               
-            image_url: "https://www.villager.website/assets/lanford_1-bb6b5025f112643b61739e620b7ab07063ea19b4d2e07cf76a5d13e5db77ff4e.jpg",
+            image_url: "https://www.villager.website/assets/lanford_2.jpg",
             buttons: [{
               type: "web_url",
               url: "https://www.facebook.com/yiwen.lan.10",
