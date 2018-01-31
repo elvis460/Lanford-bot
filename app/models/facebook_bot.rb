@@ -193,7 +193,7 @@ class FacebookBot
       "attachment":{
         "type":"image",
         "payload":{
-          "url":"http://front-pic.style.fashionguide.com.tw/uploads/share/picture/222352/share_picture_1359999787.jpg"
+          "url":"https://s3.favim.com/orig/140725/cafe-coffee-good-morning-love-Favim.com-1943450.jpg"
         }
       }
     }
@@ -210,7 +210,7 @@ class FacebookBot
             title: "藍佛是我",
             subtitle: "我是藍佛",
             item_url: "https://www.facebook.com/yiwen.lan.10",               
-            image_url: "https://www.villager.website/assets/lanford_1.jpg",
+            image_url: "https://lanford-bot.villager.website/assets/lanford_1.jpg",
             buttons: [{
               type: "web_url",
               url: "https://www.facebook.com/yiwen.lan.10",
@@ -224,7 +224,7 @@ class FacebookBot
             title: "Lanford is me",
             subtitle: "I'm Lanford",
             item_url: "https://www.facebook.com/yiwen.lan.10",               
-            image_url: "https://www.villager.website/assets/lanford_2.jpg",
+            image_url: "https://lanford-bot.villager.website/assets/lanford_2.jpg",
             buttons: [{
               type: "web_url",
               url: "https://www.facebook.com/yiwen.lan.10",
