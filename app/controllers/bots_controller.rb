@@ -1,5 +1,6 @@
 class BotsController < ApplicationController
   include BotsHelper
+
   skip_before_action :verify_authenticity_token
   require 'rest-client'
   require 'nokogiri'
@@ -28,37 +29,37 @@ class BotsController < ApplicationController
           if (event[:message][:quick_reply] && payload = event[:message][:quick_reply][:payload])
             case payload
               when 'Greet'
-                FacebookBot.new.default_message(sender)
+                default_message(sender)
               when 'Skills'
-                FacebookBot.new.send_text_message(sender, '等等呢，我還在學習...')  
+                send_text_message(sender, '等等呢，我還在學習...')  
               # when 'Shoes'
-              #   FacebookBot.new.sale_shoes(sender)
+              #   sale_shoes(sender)
               # when Action.first.name
-              #   FacebookBot.new.do_action(sender, Action.first.name)
+              #   do_action(sender, Action.first.name)
               when 'morning'
-                FacebookBot.new.good_morning(sender)
+                good_morning(sender)
               when 'evening'
-                FacebookBot.new.good_afternoon(sender)  
+                good_afternoon(sender)  
               when 'night'
-                FacebookBot.new.good_night(sender) 
+                good_night(sender) 
             end
           else
             if Action.all.map{|x| x.name}.index(text)
-              FacebookBot.new.do_action(sender, text)
+              do_action(sender, text)
             else
               case text
                 when Action.all.map{|x| x.name}
                   
                 when 'hello'
-                  FacebookBot.new.send_text_message(sender, "I'm Lanford.") 
+                  send_text_message(sender, "I'm Lanford.") 
                 # when '鞋子'
-                #   FacebookBot.new.sale_shoes(sender) 
+                #   sale_shoes(sender) 
                 # when 'trace'
-                #   FacebookBot.new.bamboo_trace(sender) 
+                #   bamboo_trace(sender) 
                 # when Action.first.name
-                #   FacebookBot.new.do_action(sender, Action.first.name)    
+                #   do_action(sender, Action.first.name)    
                 # when 'moduletest'
-                #   FacebookBot.new.do_action(sender, Action.first.name)  
+                #   do_action(sender, Action.first.name)  
                 else
                   # The AI is broken now...
                   # request =  Nokogiri::HTML(RestClient.post 'https://kakko.pandorabots.com/pandora/talk?botid=f326d0be8e345a13&skin=chat', :botcust2 => '80710b3efe026b98', :message => text)
@@ -70,9 +71,9 @@ class BotsController < ApplicationController
         elsif(event[:postback] && postback = event[:postback][:payload])
           case postback
             when 'Greet'
-              FacebookBot.new.default_message(sender)
+              default_message(sender)
             when 'Skills'
-              FacebookBot.new.send_text_message(sender, '等等呢，我還在學習...')  
+              send_text_message(sender, '等等呢，我還在學習...')  
             when 'Start'
               start = {
                 "text": "我是藍佛，有何貴幹？",
@@ -94,9 +95,9 @@ class BotsController < ApplicationController
                   },
                 ]
               }
-              FacebookBot.new.send_generic_message(sender, start)
+              send_generic_message(sender, start)
             when 'Shoes'
-              FacebookBot.new.sale_shoes(sender)
+              sale_shoes(sender)
           end  
         end        
       end
