@@ -6,7 +6,7 @@ class BotsController < ApplicationController
   require 'nokogiri'
 
   def index
-    
+
   end
 
   def webhook
@@ -60,7 +60,7 @@ class BotsController < ApplicationController
                 else
                   coin = DigitCoin.where("name =? OR symbol=?", text, text)
                   if coin.present?
-                    data = JSON.parse(RestClient.get "https://api.coinmarketcap.com/v1/ticker/#{text}")
+                    data = JSON.parse(RestClient.get "https://api.coinmarketcap.com/v1/ticker/#{coin.name}")
                     send_text_message(sender, data[0]['price_usd'])
                   else
                     send_text_message(sender, "Sorry, I don't support this Cryptocurrency.")
