@@ -66,10 +66,20 @@ class BotsController < ApplicationController
                     # save the increment of asked_times
                     coin.save
                     # get coin info
-                    data = JSON.parse(RestClient.get "https://api.coinmarketcap.com/v1/ticker/#{coin.name}")[0]
-                    message=
-                    "Name: #{data['name']}, Symbol: #{data['symbol']},  USD price: #{data['price_usd']},  BTC price: #{data['price_btc']},  24H Change Percent: #{data['percent_change_24h']}% "
-                    send_text_message(sender, message)
+                    begin
+                      data = JSON.parse(RestClient.get URI.encode("https://api.coinmarketcap.com/v1/ticker/#{coin.name}"))[0]
+                    rescue RestClient::ExceptionWithResponse => err
+                      puts err.response
+                      send_text_message(sender, "Sorry, I don't support this Cryptocurrency.")
+                    rescue RestClient::Unauthorized, RestClient::Forbidden => err
+                      puts err.response
+                      send_text_message(sender, "Sorry, I don't support this Cryptocurrency.")
+                    else
+                      message=
+                      "Name: #{data['name']}, Symbol: #{data['symbol']},  USD price: #{data['price_usd']},  BTC price: #{data['price_btc']},  24H Change Percent: #{data['percent_change_24h']}% "
+                      send_text_message(sender, message)
+                    end
+                      
                   else
                     send_text_message(sender, "Sorry, I don't support this Cryptocurrency.")
                   end
