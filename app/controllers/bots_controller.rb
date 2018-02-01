@@ -60,7 +60,7 @@ class BotsController < ApplicationController
                 else
                   coin = DigitCoin.where("name =? OR symbol=?", text, text)
                   if coin.present?
-                    data = JSON.parse(RestClient.get "https://api.coinmarketcap.com/v1/ticker/#{coin.name}")
+                    data = JSON.parse(RestClient.get "https://api.coinmarketcap.com/v1/ticker/#{coin.first.name}")
                     send_text_message(sender, data[0]['price_usd'])
                   else
                     send_text_message(sender, "Sorry, I don't support this Cryptocurrency.")
