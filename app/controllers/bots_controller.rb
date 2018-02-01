@@ -6,10 +6,7 @@ class BotsController < ApplicationController
   require 'nokogiri'
 
   def index
-  # request=  Nokogiri::HTML(RestClient.post 'https://kakko.pandorabots.com/pandora/talk?botid=f326d0be8e345a13&skin=chat', :botcust2 => '80710b3efe026b98', :message => "messenger api broken")
-  # response = request.css('b')[2].next
-  # render text: response
-  # return
+    
   end
 
   def webhook
@@ -48,7 +45,7 @@ class BotsController < ApplicationController
               do_action(sender, text)
             else
               case text
-                when Action.all.map{|x| x.name}
+                # when Action.all.map{|x| x.name}
                   
                 when 'hello'
                   send_text_message(sender, "I'm Lanford.") 
@@ -61,11 +58,17 @@ class BotsController < ApplicationController
                 # when 'moduletest'
                 #   do_action(sender, Action.first.name)  
                 else
+                  coin = DigitCoin.where("name =? OR symbol=?", text, text)
+                  if coin.present?
+                    data = JSON.parse(RestClient.get "https://api.coinmarketcap.com/v1/ticker/#{text}")
+                    send_text_message(sender, data[0]['price_usd'])
+                  else
+                    send_text_message(sender, "Sorry, I don't support this Cryptocurrency.")
+                  end
                   # The AI is broken now...
                   # request =  Nokogiri::HTML(RestClient.post 'https://kakko.pandorabots.com/pandora/talk?botid=f326d0be8e345a13&skin=chat', :botcust2 => '80710b3efe026b98', :message => text)
                   # response = request.css('b')[2].next
-                  send_text_message(sender, 'Bebug - AI broken but bot still alive.')
-              end
+                end
             end
           end
         elsif(event[:postback] && postback = event[:postback][:payload])

@@ -1,0 +1,2 @@
+class DigitCoin < ApplicationRecord
+end
