@@ -14,6 +14,9 @@ namespace :events do
       USD price: #{top_coin_today['price_usd']},
       BTC price: #{top_coin_today['price_btc']}.
     "
+    # update user's fb_id
+    get_user_data
+    # send today's info to theire messenger
     User.all.each do |user|
       send_text_message(user.fb_id, message)
     end

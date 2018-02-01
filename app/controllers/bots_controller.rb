@@ -28,7 +28,7 @@ class BotsController < ApplicationController
               when 'Greet'
                 default_message(sender)
               when 'Skills'
-                send_text_message(sender, '等等呢，我還在學習...')  
+                send_text_message(sender, '發摟我，每天給最Hot虛擬貨幣資訊')  
               when 'Shoes'
                 sale_shoes(sender)
               # when Action.first.name
@@ -58,18 +58,21 @@ class BotsController < ApplicationController
                 # when 'moduletest'
                 #   do_action(sender, Action.first.name)  
                 else
+                  # search the coin name or symbol legal or not
                   digitcoin = DigitCoin.where("name =? OR symbol =?", text, text)
                   if digitcoin.present?
                     coin = digitcoin.first
-                    coin.increment('asked_times', 1)
+                    coin.increment('asked_times')
+                    # save the increment of asked_times
+                    coin.save
+                    # get coin info
                     data = JSON.parse(RestClient.get "https://api.coinmarketcap.com/v1/ticker/#{coin.name}")[0]
                     message=
-                    "
-                      Name: #{data['name']},
-                      Symbol: #{data['symbol']},
-                      USD price: #{data['price_usd']},
-                      BTC price: #{data['price_btc']},
-                      24H Change Percent: #{data['percent_change_24h']}%.
+                    "Name: #{data['name']},
+                    Symbol: #{data['symbol']},
+                    USD price: #{data['price_usd']},
+                    BTC price: #{data['price_btc']},
+                    24H Change Percent: #{data['percent_change_24h']}%.
                     "
                     send_text_message(sender, message)
                   else
@@ -86,7 +89,10 @@ class BotsController < ApplicationController
             when 'Greet'
               default_message(sender)
             when 'Skills'
-              send_text_message(sender, '等等呢，我還在學習...')  
+              send_text_message(sender, '發摟我，每天給最Hot虛擬貨幣資訊')  
+            when 'Cryptocurrency'
+              send_text_message(sender, 'I support more than 1500 Cryptocurrency tracing!!!
+                Just input which coin info u wanna know!!!!')  
             when 'Start'
               start = {
                 "text": "我是藍佛，有何貴幹？",
