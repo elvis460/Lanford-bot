@@ -68,7 +68,7 @@ class BotsController < ApplicationController
                     # get coin info
                     data = JSON.parse(RestClient.get "https://api.coinmarketcap.com/v1/ticker/#{coin.name}")[0]
                     message=
-                    "Name: #{data['name']}, Symbol: #{data['symbol']},  USD price: #{data['price_usd']},  BTC price: #{data['price_btc']},  24H Change Percent: #{data['percent_change_24h']}%"
+                    "Name: #{data['name']}, Symbol: #{data['symbol']},  USD price: #{data['price_usd']},  BTC price: #{data['price_btc']},  24H Change Percent: #{data['percent_change_24h']}% "
                     send_text_message(sender, message)
                   else
                     send_text_message(sender, "Sorry, I don't support this Cryptocurrency.")
@@ -86,7 +86,7 @@ class BotsController < ApplicationController
             when 'Skills'
               send_text_message(sender, '發摟我，每天給最Hot虛擬貨幣資訊')  
             when 'Cryptocurrency'
-              send_text_message(sender, 'I support more than 1500 Cryptocurrency tracing!!! Just input which coin info u wanna know!!!!')  
+              send_text_message(sender, 'I support more than 1500 Cryptocurrency tracing!!!  Just input which coin info u wanna know!!!!')  
             when 'Start'
               start = {
                 "text": "我是藍佛，有何貴幹？",
