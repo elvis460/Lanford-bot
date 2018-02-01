@@ -7,13 +7,7 @@ namespace :events do
     top_index = data.map{|x| x['percent_change_24h'].to_i}.each_with_index.max.last
     top_coin_today = data[top_index]
     message=
-    "Rise Highest Coin Today:
-      [24H Change Percent:] #{top_coin_today['percent_change_24h']}%,
-      Name: #{top_coin_today['name']},
-      Symbol: #{top_coin_today['symbol']},
-      USD price: #{top_coin_today['price_usd']},
-      BTC price: #{top_coin_today['price_btc']}.
-    "
+    "Rise Highest Coin Today:   [24H Change Percent:] #{top_coin_today['percent_change_24h']}%, Name: #{top_coin_today['name']},  Symbol: #{top_coin_today['symbol']},  USD price: #{top_coin_today['price_usd']},  BTC price: #{top_coin_today['price_btc']}. "
     # update user's fb_id
     get_user_data
     # send today's info to theire messenger
