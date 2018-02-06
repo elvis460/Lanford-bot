@@ -11,7 +11,7 @@ Ref [Messenger API](https://developers.facebook.com/docs/messenger-platform/quic
 
 ## Demo
 
-Direct input message to [Landford-Bot](https://www.facebook.com/Lanford%E8%97%8D%E4%BD%9B-300602840279256/) or click any button and see what showed!!!
+Direct send message to [Landford-Bot](https://www.facebook.com/Lanford%E8%97%8D%E4%BD%9B-300602840279256/) or click any button and see what showed!!!
 
 My Messenger Bot could answer you the price and the 24H-Changed-Percent of Cryptocurrency you input! Try it!
 
@@ -31,6 +31,8 @@ bundle install
 
 ### Setting Facebook Webhook
 
+* Besides the program, you need to set up Messenger API for your Fan Page on [Facebook for Developers](https://developers.facebook.com/). And I wrote [an article about initial setting up intro here](https://medium.com/@elvis4600/build-your-own-messenger-bot-e72dbf421ab9)
+ 
 * In Facebook Webhook setting page, you should input the callback url (SSL required)
 
  `https://[your domin]/bots/webhook`
@@ -97,7 +99,7 @@ Use any tool or curl method in commandline to initial Persistent Menu
 * `call_to_actions` should put your postback and payload you set in `bots_controller`
 
 
-## Congrats! Your Bot is live now!
+## Congrats! Your Bot is alive now!
 
 You could do some change in `bots_controllers#receive_message` and `bots_helper` to create your own Bot.
 
