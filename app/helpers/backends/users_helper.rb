@@ -1,2 +1,0 @@
-module Backends::UsersHelper
-end
