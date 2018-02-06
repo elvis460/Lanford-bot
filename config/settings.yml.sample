@@ -2,9 +2,6 @@ defaults: &defaults
   Messenger_api:
     access_token: page_access_token
     verify_token: your_verify_token
-  Cleverbot:
-    api_user: Cleverbot_api_user
-    api_key: Cleverbot_api_key  
 development:
   <<: *defaults
   neat_setting: 800
