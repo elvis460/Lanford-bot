@@ -1,5 +1,6 @@
 class BotsController < ApplicationController
   include BotsHelper
+
   skip_before_action :verify_authenticity_token
   require 'rest-client'
   require 'nokogiri'
@@ -25,50 +26,77 @@ class BotsController < ApplicationController
           if (event[:message][:quick_reply] && payload = event[:message][:quick_reply][:payload])
             case payload
               when 'Greet'
-                FacebookBot.new.default_message(sender)
+                default_message(sender)
               when 'Skills'
-                FacebookBot.new.send_text_message(sender, '等等呢，我還在學習...')  
-              # when 'Shoes'
-              #   FacebookBot.new.sale_shoes(sender)
-              when Action.first.name
-                FacebookBot.new.do_action(sender, Action.first.name)
-              when '早安'
-                FacebookBot.new.good_morning(sender)
-              when '午安'
-                FacebookBot.new.good_afternoon(sender)  
-              when '晚安'
-                FacebookBot.new.good_night(sender) 
+                send_text_message(sender, '發摟我，每天給最Hot虛擬貨幣資訊')  
+              when 'Shoes'
+                sale_shoes(sender)
+              # when Action.first.name
+              #   do_action(sender, Action.first.name)
+              when 'morning'
+                good_morning(sender)
+              when 'evening'
+                good_afternoon(sender)  
+              when 'night'
+                good_night(sender) 
             end
           else
             if Action.all.map{|x| x.name}.index(text)
-              FacebookBot.new.do_action(sender, text)
+              do_action(sender, text)
             else
               case text
-                when Action.all.map{|x| x.name}
+                # when Action.all.map{|x| x.name}
                   
                 when 'hello'
-                  FacebookBot.new.send_text_message(sender, "I'm Lanford.") 
-                when '鞋子'
-                  FacebookBot.new.sale_shoes(sender) 
-                when 'trace'
-                  FacebookBot.new.bamboo_trace(sender) 
+                  send_text_message(sender, "I'm Lanford.") 
+                # when '鞋子'
+                #   sale_shoes(sender) 
+                # when 'trace'
+                #   bamboo_trace(sender) 
                 # when Action.first.name
-                #   FacebookBot.new.do_action(sender, Action.first.name)    
+                #   do_action(sender, Action.first.name)    
                 # when 'moduletest'
-                #   FacebookBot.new.do_action(sender, Action.first.name)  
+                #   do_action(sender, Action.first.name)  
                 else
-                  request =  Nokogiri::HTML(RestClient.post 'https://kakko.pandorabots.com/pandora/talk?botid=f326d0be8e345a13&skin=chat', :botcust2 => 'aef88233ae01d56c', :message => text)
-                  response = request.css('b')[2].next
-                  User.find_by(fb_id: sender).update(ai_response: response) 
-              end
+                  # search the coin name or symbol legal or not
+                  digitcoin = DigitCoin.where("name =? OR symbol =?", text, text)
+                  if digitcoin.present?
+                    coin = digitcoin.first
+                    coin.increment('asked_times')
+                    # save the increment of asked_times
+                    coin.save
+                    # get coin info
+                    begin
+                      data = JSON.parse(RestClient.get URI.encode("https://api.coinmarketcap.com/v1/ticker/#{coin.name}"))[0]
+                    rescue RestClient::ExceptionWithResponse => err
+                      puts err.response
+                      send_text_message(sender, "Sorry, I don't support this Cryptocurrency.")
+                    rescue RestClient::Unauthorized, RestClient::Forbidden => err
+                      puts err.response
+                      send_text_message(sender, "Sorry, I don't support this Cryptocurrency.")
+                    else
+                      message=
+                      "Name: #{data['name']}, Symbol: #{data['symbol']},  USD price: #{data['price_usd']},  BTC price: #{data['price_btc']},  24H Change Percent: #{data['percent_change_24h']}% "
+                      send_text_message(sender, message)
+                    end
+                      
+                  else
+                    send_text_message(sender, "Sorry, I don't support this Cryptocurrency.")
+                  end
+                  # The AI is broken now...
+                  # request =  Nokogiri::HTML(RestClient.post 'https://kakko.pandorabots.com/pandora/talk?botid=f326d0be8e345a13&skin=chat', :botcust2 => '80710b3efe026b98', :message => text)
+                  # response = request.css('b')[2].next
+                end
             end
           end
         elsif(event[:postback] && postback = event[:postback][:payload])
           case postback
             when 'Greet'
-              FacebookBot.new.default_message(sender)
+              default_message(sender)
             when 'Skills'
-              FacebookBot.new.send_text_message(sender, '等等呢，我還在學習...')  
+              send_text_message(sender, '發摟我，每天給最Hot虛擬貨幣資訊')  
+            when 'Cryptocurrency'
+              send_text_message(sender, 'I support more than 1500 Cryptocurrency tracing!!!  Just input which coin info u wanna know!!!!')  
             when 'Start'
               start = {
                 "text": "我是藍佛，有何貴幹？",
@@ -90,9 +118,9 @@ class BotsController < ApplicationController
                   },
                 ]
               }
-              FacebookBot.new.send_generic_message(sender, start)
+              send_generic_message(sender, start)
             when 'Shoes'
-              FacebookBot.new.sale_shoes(sender)
+              sale_shoes(sender)
           end  
         end        
       end

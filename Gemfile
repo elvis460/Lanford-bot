@@ -26,6 +26,8 @@ gem 'jbuilder', '~> 2.5'
 gem 'settingslogic'
 gem 'rest-client'
 gem 'whenever'
+gem 'nokogiri'
+gem 'mysql2'
 
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 3.0'

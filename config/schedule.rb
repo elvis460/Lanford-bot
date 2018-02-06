@@ -20,6 +20,15 @@
 # Learn more: http://github.com/javan/whenever
 set :environment, 'development'
 set :output, "log/cron_log.log"
+
+every 1.day, at: '11:59pm' do
+  rake "log:clear"
+end
+
+every 1.day, at: '9:00pm' do
+  rake "events:coin_info_broadcast"
+end
+
 #
 # every 1.day, at: '6:00pm' do
 #   rake "events:dinner_broadcast"
@@ -27,6 +36,4 @@ set :output, "log/cron_log.log"
 # every 1.day, at: '9:00pm' do
 #   rake "events:night_broadcast"
 # end
-# every 1.day, at: '11:59pm' do
-#   rake "log:clear"
-# end
+

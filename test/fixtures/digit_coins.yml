@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  symbol: MyString
+  percent_change_24h: MyString
+  price_usd: MyString
+  price_btc: MyString
+
+two:
+  name: MyString
+  symbol: MyString
+  percent_change_24h: MyString
+  price_usd: MyString
+  price_btc: MyString
