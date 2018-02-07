@@ -22,3 +22,5 @@
 
 /config/*.yml
 /sftp-config.json
+
+/public/backend_template
